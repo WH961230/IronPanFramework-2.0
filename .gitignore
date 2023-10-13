@@ -74,3 +74,5 @@ Asset/Library
 Asset/UserSettings
 Asset/Logs
 Asset/Temp
+Asset/obj
+Asset/.idea
