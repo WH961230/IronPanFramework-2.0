@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10a45b4e35fa48ddb96ee7c7743dbde5, type: 3}
-  m_Name: MainEditorTitleSettings
+  m_Script: {fileID: 11500000, guid: 30d88d7ca71f494e83291db58e6490ac, type: 3}
+  m_Name: MainEditorSubInterfaceManualSetting
   m_EditorClassIdentifier: 
-  TitleList: 0000000001000000
