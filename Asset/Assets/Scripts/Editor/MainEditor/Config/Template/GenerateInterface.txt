@@ -1,0 +1,8 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "MainEditorSubInterface#ClassName#Setting", menuName = "ScriptableObjects/MainEditorSubInterface/MainEditorSubInterface#ClassName#Setting", order = 1)]
+public class MainEditorSubInterface#ClassName#Setting : MainEditorSubInterfaceSetting {
+    public override void OnGUI() {
+        base.OnGUI();
+    }
+}

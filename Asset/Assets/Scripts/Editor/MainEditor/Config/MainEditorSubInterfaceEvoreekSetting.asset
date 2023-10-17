@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b19e0597cf5a426894e5759d177c4eec, type: 3}
-  m_Name: MainEditorSubInterfaceInstallerSetting
+  m_Script: {fileID: 11500000, guid: 9d6ea0348f652b9428710fcd5264d8af, type: 3}
+  m_Name: MainEditorSubInterfaceEvoreekSetting
   m_EditorClassIdentifier: 
+  SubInterfaceTitleSign: Evoreek
