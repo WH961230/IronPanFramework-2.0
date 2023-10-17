@@ -14,3 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TitleSign: "\u4E3B\u9875"
   DisplayWeight: 0
+  TerrainRoot: {fileID: 0}
+  TerrainRootName: TerrainRoot
+  ObjectRoot: {fileID: 0}
+  ObjectRootName: ObjectRoot
+  InterfaceRoot: {fileID: 0}
+  InterfaceRootName: InterfaceRoot
