@@ -20,12 +20,12 @@ public class MainEditorInterfaceGenerate : EditorWindow {
         className = EditorGUILayout.TextField("ClassName", className);
         if (GUILayout.Button("Generate")) {
             string inputPath = "Assets/Scripts/Editor/MainEditor/Config/Template/GenerateInterface.txt";
-            string outputPath = "Assets/Scripts/Editor/MainEditor/Core/SubInterface/";
+            string outputPath = "Assets/Scripts/Editor/MainEditor/Core/Interface/";
             if (String.IsNullOrEmpty(className)) {
                 return;
             }
 
-            bool createScript = CreateStript(inputPath, outputPath, className, "MainEditorSubInterface", "Setting");
+            bool createScript = CreateStript(inputPath, outputPath, className, "MainEditor", "Setting");
             if (createScript) {
                 EditorUtility.ClearProgressBar();
                 EditorUtility.DisplayDialog("创建成功", $"创建标志：{className}", "确定");
