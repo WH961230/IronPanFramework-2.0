@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59459565639a6914887bbb08e9735565, type: 3}
-  m_Name: MainEditorTerrainSetting
+  m_Script: {fileID: 11500000, guid: f0def27323fe3cf4cb292d836874657a, type: 3}
+  m_Name: MainEditorAvatarSetting
   m_EditorClassIdentifier: 
-  TitleSign: "\u5730\u5F62"
-  DisplayWeight: 1
-  TerrainObject: {fileID: 5318381524152043805, guid: f07a4b81c833478479650dcaccb4cd5d,
-    type: 3}
+  TitleSign: "\u52A8\u6001\u5934\u50CF"
+  DisplayWeight: 5
