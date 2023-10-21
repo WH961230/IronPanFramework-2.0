@@ -29,8 +29,16 @@ public class GameMessage {
         register.Register(id, a);
     }
 
+    public void Reg(MessageCode messageCode, Action a) {
+        register.Register((int)messageCode, a);
+    }
+
     public void Reg<T>(int id, Action<T> a) {
         register.Register(id, a);
+    }
+
+    public void Reg<T>(MessageCode messageCode, Action<T> a) {
+        register.Register((int)messageCode, a);
     }
 
     public void Reg<T1, T2>(int id, Action<T1, T2> a) {
@@ -51,6 +59,10 @@ public class GameMessage {
 
     public void Dis(int id) {
         register.Dispatcher(id);
+    }
+
+    public void Dis(MessageCode messageCode) {
+        register.Dispatcher((int)messageCode);
     }
 
     public void Dis<T>(int id, T t) {
@@ -125,4 +137,13 @@ public class MessageRegister {
             }
         }
     }
+}
+
+public class GameMessageCode {
+    public static MessageCode CreateObject = MessageCode.CreateObject;//创建一个物体
+}
+
+[Serializable]
+public enum MessageCode {
+    CreateObject = 1,//创建一个物体
 }

@@ -12,8 +12,16 @@ public class MainEditorAvatarSetting : MainEditorSetting {
         base.OnGUI();
         AvatarCamera = (Camera)EditorGUILayout.ObjectField(AvatarCamera, typeof(Camera), true);
         RenderTexture = (RenderTexture)EditorGUILayout.ObjectField(RenderTexture, typeof(RenderTexture), true);
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("保存地址");
         SavePath = EditorGUILayout.TextField(SavePath);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("图片名称");
         SpriteSaveName = EditorGUILayout.TextField(SpriteSaveName);
+        EditorGUILayout.EndHorizontal();
 
         if (GUILayout.Button("拍摄角色头像")) {
             TakeSnap();
@@ -35,10 +43,10 @@ public class MainEditorAvatarSetting : MainEditorSetting {
         //保存
         byte[] bytes = texture2D.EncodeToPNG();
         string pngName = Time.realtimeSinceStartup.ToString();
-
         string path = SavePath + SpriteSaveName;
         System.IO.File.WriteAllBytes(path, bytes);
-        AssetDatabase.Refresh();//刷新
+        //刷新
+        AssetDatabase.Refresh();
         //设置为 Sprite
         texture2D = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
         SetTextureTypeToSprite(texture2D);
@@ -49,7 +57,8 @@ public class MainEditorAvatarSetting : MainEditorSetting {
     //设置 Texture2D 类型为 Sprite
     private static void SetTextureTypeToSprite(Object textureObj) {
         // 将Texture转换为TextureImporter对象
-        TextureImporter textureImporter = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(textureObj)) as TextureImporter;
+        TextureImporter textureImporter =
+            AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(textureObj)) as TextureImporter;
         if (textureImporter != null) {
             // 设置textureType为Sprite
             textureImporter.textureType = TextureImporterType.Sprite;

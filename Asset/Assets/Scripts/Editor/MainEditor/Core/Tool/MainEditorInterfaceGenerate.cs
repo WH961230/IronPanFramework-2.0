@@ -20,7 +20,7 @@ public class MainEditorInterfaceGenerate : EditorWindow {
         className = EditorGUILayout.TextField("ClassName", className);
         if (GUILayout.Button("Generate")) {
             string inputPath = "Assets/Scripts/Editor/MainEditor/Config/Template/GenerateInterface.txt";
-            string outputPath = "Assets/Scripts/Editor/MainEditor/Core/Interface/";
+            string outputPath = "Assets/Scripts/Editor/MainEditor/Core/Model/";
             if (String.IsNullOrEmpty(className)) {
                 return;
             }

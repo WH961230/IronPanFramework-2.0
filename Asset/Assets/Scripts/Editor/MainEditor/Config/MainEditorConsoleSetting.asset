@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: MainEditorConsoleSetting
   m_EditorClassIdentifier: 
   TitleSign: "\u63A7\u5236\u53F0"
-  DisplayWeight: 6
+  DisplayWeight: 7
+  ConsoleDatas:
+  - ConsoleName: create object
+    ConsoleMessageCode: 1

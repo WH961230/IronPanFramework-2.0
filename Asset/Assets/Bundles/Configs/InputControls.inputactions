@@ -1,0 +1,74 @@
+{
+    "name": "InputControls",
+    "maps": [
+        {
+            "name": "Console",
+            "id": "d9a1d6b5-6add-41ff-96af-2d6a2274a258",
+            "actions": [
+                {
+                    "name": "OpenConsoleInterface",
+                    "type": "Button",
+                    "id": "b473615c-90a4-4e6c-8f5a-0a63118a002e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CloseConsoleInterface",
+                    "type": "Button",
+                    "id": "cb9dfe1e-94d6-46d2-8d8b-3df93e7ff08d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SendConsoleMessage",
+                    "type": "Button",
+                    "id": "01806053-a952-476d-8dab-bbdc42fb79b9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3449ba0e-d3d7-43b2-91a4-9c4dc7140f27",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenConsoleInterface",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b5ab38ee-4004-4153-aa3e-9b52b0dd4c29",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CloseConsoleInterface",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79f111ff-1c60-41cf-b557-94fbe0e561d0",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SendConsoleMessage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

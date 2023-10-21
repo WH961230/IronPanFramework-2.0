@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: MainEditorInterfaceSetting
   m_EditorClassIdentifier: 
   TitleSign: "\u754C\u9762"
-  DisplayWeight: 4
+  DisplayWeight: 5
+  ConsoleInterfaceName: 
+  ConsoleInterfacePrefab: {fileID: 0}

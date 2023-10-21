@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: MainEditorAvatarSetting
   m_EditorClassIdentifier: 
   TitleSign: "\u52A8\u6001\u5934\u50CF"
-  DisplayWeight: 5
+  DisplayWeight: 6
+  AvatarCamera: {fileID: 0}
+  RenderTexture: {fileID: 0}
+  SavePath: 
+  SpriteSaveName: 
