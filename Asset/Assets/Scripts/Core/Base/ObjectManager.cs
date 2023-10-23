@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour {
     private void Start() {
-        GameManager.instance.gameMessage.Reg(MessageCode.CreateObject, CreateObject);
+        GameManager.instance.gameMessage.Reg((int)MessageCode.CreateObject, CreateObject);
     }
 
     public void CreateObject() {

@@ -60,7 +60,7 @@
                     "name": "",
                     "id": "79f111ff-1c60-41cf-b557-94fbe0e561d0",
                     "path": "<Keyboard>/enter",
-                    "interactions": "Press",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "SendConsoleMessage",

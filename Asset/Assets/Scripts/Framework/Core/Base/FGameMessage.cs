@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-public class Act {
+public class FAct {
     public int id;
     public Delegate handler;
 
-    public Act(int id, Delegate handler) {
+    public FAct(int id, Delegate handler) {
         this.id = id;
         this.handler = handler;
     }
@@ -23,8 +23,8 @@ public class Act {
     }
 }
 
-public class GameMessage {
-    private MessageRegister register = new MessageRegister();
+public class FGameMessage {
+    private FMessageRegister register = new FMessageRegister();
     public void Reg(int id, Action a) {
         register.Register(id, a);
     }
@@ -62,7 +62,7 @@ public class GameMessage {
     }
 }
 
-public class MessageRegister {
+public class FMessageRegister {
     private Dictionary<int, List<Act>> handles = new Dictionary<int, List<Act>>();
 
     public void Register(int id, Delegate e) {
@@ -127,11 +127,19 @@ public class MessageRegister {
     }
 }
 
-public class GameMessageCode {
-    public static MessageCode CreateObject = MessageCode.CreateObject;//创建一个物体
-}
+public class FMessageCode {
+    public static int StartGame = 5;//开始游戏
+    public static int QuitGame = 6;//退出游戏
 
-[Serializable]
-public enum MessageCode {
-    CreateObject = 1,//创建一个物体
+    public static int CreateObject = 1;//创建物体
+    public static int RemoveObject = 2;//移除物体
+    public static int RemoveAllObject = 7;//移除所有物体
+
+    public static int CreateTerrain = 3;//创建地形
+    public static int RemoveTerrain = 4;//移除地形
+    public static int RemoveAllTerrain = 8;//移除所有物体
+
+    public static int CreatePlayer = 9;
+    public static int RemovePlayer = 10;
+    public static int RemoveAllPlayer = 11;
 }
