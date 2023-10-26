@@ -30,6 +30,7 @@ public class FTerrainCreator {
             if (isCreate) {
                 GameObject mapEditor = new GameObject("地图编辑器");
                 sceneMapEditor = mapEditor.AddComponent<FMapEditorTool>();
+                mapEditor.transform.SetParent(GameObject.Find("FTerrain")?.transform);
 
                 GameObject terrainGo = Object.Instantiate(terrainSetting.TerrainPrefab);
                 terrainGo.transform.SetParent(sceneMapEditor.transform);

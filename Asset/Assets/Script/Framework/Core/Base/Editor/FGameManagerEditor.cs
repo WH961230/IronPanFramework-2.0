@@ -1,5 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [CustomEditor(typeof(FGameManager))]
 public class FGameManagerEditor : Editor {
@@ -10,6 +12,7 @@ public class FGameManagerEditor : Editor {
         GUILayout.Label("游戏管理器");
 
         GameLifeCycle(fGameManager);
+        GameInstallEditor(fGameManager);
         GameMapEditor(fGameManager);
 
         base.OnInspectorGUI();
@@ -31,6 +34,17 @@ public class FGameManagerEditor : Editor {
         EditorGUILayout.EndHorizontal();
     }
 
+    private void GameInstallEditor(FGameManager fGameManager) {
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("安装基础", GUILayout.Height(30))) {
+            Install("Interface");
+            Install("Object");
+            Install("Terrain");
+            Install("Camera");
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+
     private void GameMapEditor(FGameManager fGameManager) {
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("地图编辑器", GUILayout.Height(30))) {
@@ -44,5 +58,51 @@ public class FGameManagerEditor : Editor {
         }
 
         EditorGUILayout.EndHorizontal();
+    }
+
+    private void Install(string type) {
+        switch (type) {
+            case "Interface":
+                GameObject interfaceGo = GameObject.Find("FInterface");
+                if (interfaceGo != null) {
+                    DestroyImmediate(interfaceGo);
+                    return;
+                }
+                GameObject canvasGo = new GameObject("FInterface");
+                Canvas canvas = canvasGo.AddComponent<Canvas>();
+                CanvasScaler canvasScaler = canvasGo.AddComponent<CanvasScaler>();
+                GraphicRaycaster graphicRaycaster = canvasGo.AddComponent<GraphicRaycaster>();
+                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+                GameObject eventSystemGo = new GameObject("EventSystem");
+                EventSystem eventSystem = eventSystemGo.AddComponent<EventSystem>();
+                StandaloneInputModule standaloneInputModule = eventSystemGo.AddComponent<StandaloneInputModule>();
+                eventSystemGo.transform.SetParent(canvasGo.transform);
+                break;
+            case "Object":
+                GameObject objectGo = GameObject.Find("FObject");
+                if (objectGo != null) {
+                    DestroyImmediate(objectGo);
+                    return;
+                }
+                objectGo = new GameObject("FObject");
+                break;
+            case "Terrain":
+                GameObject terrainGo = GameObject.Find("FTerrain");
+                if (terrainGo != null) {
+                    DestroyImmediate(terrainGo);
+                    return;
+                }
+                terrainGo = new GameObject("FTerrain");
+                break;
+            case "Camera":
+                GameObject cameraGo = GameObject.Find("FCamera");
+                if (cameraGo != null) {
+                    DestroyImmediate(cameraGo);
+                    return;
+                }
+                cameraGo = new GameObject("FCamera");
+                break;
+        }
     }
 }
