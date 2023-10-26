@@ -13,6 +13,7 @@ public class FMapEditorToolEditor : Editor {
     private int counter = 0;
     
     private string path;
+    private string editorPrefabPath = "Assets/Script/Framework/Prefab/";
 
     public override void OnInspectorGUI() {
         FMapEditorTool fMapEditorTool = (FMapEditorTool)target;
@@ -69,7 +70,6 @@ public class FMapEditorToolEditor : Editor {
         EditorGUILayout.EndHorizontal();
     }
 
-    private string editorPrefabPath = "Assets/Script/Framework/Prefab/";
     private void GameEditor(FMapEditorTool fMapEditorTool) {
         if (isEditor) {
             x = 0;
