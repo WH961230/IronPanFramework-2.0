@@ -1,0 +1,16 @@
+Framework 目录说明：
+
+注：脚本均以 F 为前缀
+
+- Core 核心代码
+        - Base 基础
+        - Component 组件
+        - Creator 创造器
+        - Setting 配置
+                - ToolSetting 配置工具
+        - Tool 工具
+- Prefab 预制体
+- Setting 配置文件
+        - GUISkin 配置皮肤
+        - InputControl 输入控制
+        - ToolSetting 配置工具
