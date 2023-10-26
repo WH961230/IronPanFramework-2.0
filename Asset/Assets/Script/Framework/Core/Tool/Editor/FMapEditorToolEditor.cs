@@ -22,6 +22,7 @@ public class FMapEditorToolEditor : Editor {
         if (GUILayout.Button("返回", GUILayout.Height(30))) {
             FEditorCommon.SaveScene();
             FEditorCommon.JumpToTarget(false, fMapEditorTool.fGameManager);
+            return;
         }
 
         if (GUILayout.Button("销毁", GUILayout.Height(30))) {
@@ -37,6 +38,7 @@ public class FMapEditorToolEditor : Editor {
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("编辑地形", GUILayout.Height(30))) {
             isEditor = !isEditor;
+            FEditorCommon.LockInspector(isEditor);
         }
 
         EditorGUILayout.EndHorizontal();
@@ -79,7 +81,6 @@ public class FMapEditorToolEditor : Editor {
 
             EditorGUILayout.BeginHorizontal();
             editorPrefabPath = GUILayout.TextField(editorPrefabPath);
-
             
             if (editorPrefabPath.IndexOf("Assets") != 0) {
                 editorPrefabPath = editorPrefabPath.Substring(editorPrefabPath.IndexOf("Assets")) + "/";
@@ -137,8 +138,6 @@ public class FMapEditorToolEditor : Editor {
             spawnedPrefab.transform.position = Vector3.zero;
             spawnedPrefab.transform.rotation = Quaternion.identity;
             spawnedPrefab.transform.SetParent(fMapEditorTool.terrainGo.transform);
-            FEditorCommon.LockInspector(true);
-
             Selection.activeObject = spawnedPrefab;
         }
         EditorGUILayout.LabelField(go.name, EditorStyles.miniLabel, GUILayout.Width(60));
