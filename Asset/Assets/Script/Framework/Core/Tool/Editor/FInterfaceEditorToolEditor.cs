@@ -21,11 +21,25 @@ public class FInterfaceEditorToolEditor : Editor {
         GUILayout.Label("游戏管理器 - 界面编辑器");
 
         EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("添加界面", GUILayout.Height(30))) {
+            
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("编辑界面", GUILayout.Height(30))) {
             tool.isEditorInterface = !tool.isEditorInterface;
         }
         EditorGUILayout.EndHorizontal();
 
+        InterfaceDisplay(tool);
+        InterfaceSave(tool);
+
+
+        base.OnInspectorGUI();
+    }
+
+    private void InterfaceDisplay(FInterfaceEditorTool tool) {
         if (tool.isEditorInterface) {
             EditorGUILayout.BeginHorizontal();
             if (tool.replacePrefab != null) {
@@ -47,15 +61,16 @@ public class FInterfaceEditorToolEditor : Editor {
             EditorGUILayout.EndHorizontal();
         }
 
-        EditorGUILayout.BeginHorizontal();
+    }
+
+    private void InterfaceSave(FInterfaceEditorTool tool) {
         if (tool.isEditorInterface && tool.replacePrefab != null) {
+            EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("存储界面", GUILayout.Height(30))) {
                 Save(tool, Selection.activeObject.name);
             }
+            EditorGUILayout.EndHorizontal();
         }
-        EditorGUILayout.EndHorizontal();
-
-        base.OnInspectorGUI();
     }
 
     private void Save(FInterfaceEditorTool tool, string interfaceName) {
