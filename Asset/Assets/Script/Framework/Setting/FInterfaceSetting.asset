@@ -12,3 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df859f988cb14500b50342a9843c0903, type: 3}
   m_Name: FInterfaceSetting
   m_EditorClassIdentifier: 
+  interfaceRoot: {fileID: 4989496789234266164, guid: 461e04c0574bfc345ab4bfa020958bb0,
+    type: 3}
+  interfacePrefabList:
+  - interfaceName: Image
+    interfaceGo: {fileID: 1495306960633619860, guid: 3db017eddd31751478cfc73ca6dd2836,
+      type: 3}

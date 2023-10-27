@@ -22,11 +22,8 @@ public class FGetPointToolEditor : Editor {
         EditorGUILayout.BeginHorizontal();
 
         if (GUILayout.Button("创建子点位", GUILayout.Height(30))) {
-            GameObject childPoint = Instantiate(fGetPointTool.FpointToolSetting.FPointPrefab);
+            GameObject childPoint = Instantiate(fGetPointTool.FpointToolSetting.FPointPrefab, fGetPointTool.transform);
             childPoint.name = "未保存点位";
-            childPoint.transform.SetParent(fGetPointTool.transform);
-            childPoint.transform.localPosition = Vector3.zero;
-            childPoint.transform.localRotation = Quaternion.identity;
 
             FEditorCommon.JumpToTarget(true, childPoint);
         }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class FPlayerSetting : ScriptableObject {
     public string SettingName;
     public FPointToolSetting FPointToolSetting;
+    public GameObject objectRootPrefab;
     public List<FPlayerData> playerDatas = new List<FPlayerData>();
 
     [Serializable]

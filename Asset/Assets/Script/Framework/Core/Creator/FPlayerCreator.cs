@@ -10,6 +10,7 @@ public class FPlayerCreator {
     public FPlayerCreator(FGameCreator gameCreator) {
         this.gameCreator = gameCreator;
         playerSetting = AssetDatabase.LoadAssetAtPath<FPlayerSetting>(settingPath);
+        CreateRoot();
     }
 
     public void ReadArchive() {
@@ -29,7 +30,7 @@ public class FPlayerCreator {
     private FGameData.FPlayerData CreateSinglePlayer(FPlayerSetting.FPlayerData settingPlayerData) {
         FGameData.FPlayerData data = new FGameData.FPlayerData();
         data.ID = gameCreator.GetIDCreator();
-        data.GO = Object.Instantiate(settingPlayerData.prefab);
+        data.GO = Object.Instantiate(settingPlayerData.prefab, GameObject.Find("FObjectRoot")?.transform);
         FPointToolSetting.FPointData tmpFPointData = playerSetting.FPointToolSetting.GetRandomFPointData();
         data.GO.transform.position = tmpFPointData.FPointPos;
         data.GO.transform.rotation = tmpFPointData.FPointRot;
@@ -40,5 +41,22 @@ public class FPlayerCreator {
 
     public void DestroyPlayer() {
         FGameManager.Instance.FGameMessage.Dis(FMessageCode.RemoveAllPlayer);
+        RemoveRoot();
+    }
+
+    private void CreateRoot() {
+        GameObject rootGo = GameObject.Find("FObjectRoot");
+        if (rootGo != null) {
+            return;
+        }
+        rootGo = Object.Instantiate(playerSetting.objectRootPrefab);
+        rootGo.name = "FObjectRoot";
+    }
+
+    private void RemoveRoot() {
+        GameObject go = GameObject.Find("FObjectRoot");
+        if (go != null) {
+            Object.DestroyImmediate(go);
+        }
     }
 }

@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SettingName: "\u73A9\u5BB6\u914D\u7F6E"
   FPointToolSetting: {fileID: 11400000, guid: 4bee9276526276440a00f8c97500da61, type: 2}
+  objectRootPrefab: {fileID: 21248228778798563, guid: 990ae5ae5f12b304bb9f57a0d85595fb,
+    type: 3}
   playerDatas:
   - name: "\u63A7\u5236\u73A9\u5BB6"
-    prefab: {fileID: 5972454839621705586, guid: fd9a64e65d4e5b84c86ec208c4be1c47, type: 3}
+    prefab: {fileID: 5972454839621705586, guid: fd9a64e65d4e5b84c86ec208c4be1c47,
+      type: 3}

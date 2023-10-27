@@ -33,11 +33,10 @@ public class FPointToolSettingEditor : Editor {
 
             for (int i = 0; i < setting.FPointDatas.Count; i++) {
                 FPointToolSetting.FPointData fPointData = setting.FPointDatas[i];
-                GameObject child = Instantiate(setting.FPointPrefab);
+                GameObject child = Instantiate(setting.FPointPrefab, pointToolProbe.transform);
                 child.name = "原始点位_" + i;
                 child.transform.position = fPointData.FPointPos;
                 child.transform.rotation = fPointData.FPointRot;
-                child.transform.SetParent(pointToolProbe.transform);
             }
 
             FEditorCommon.JumpToTarget(false, pointToolProbe);

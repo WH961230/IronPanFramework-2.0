@@ -1,7 +1,6 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 [CustomEditor(typeof(FGameManager))]
 public class FGameManagerEditor : Editor {
@@ -9,11 +8,14 @@ public class FGameManagerEditor : Editor {
         FGameManager fGameManager = (FGameManager)target;
 
         GUI.skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Script/Framework/Setting/GUISkin/GUIBtn.guiskin");
-        GUILayout.Label("游戏管理器");
+        GUILayout.Label("游戏管理器" + (fGameManager.FGameState == FGameState.GameStart ? " - 开始游戏" : ""));
 
         GameLifeCycle(fGameManager);
-        GameInstallEditor(fGameManager);
-        GameMapEditor(fGameManager);
+
+        if (fGameManager.FGameState != FGameState.GameStart) {
+            GameInterfaceEditor(fGameManager);
+            GameMapEditor(fGameManager);
+        }
 
         base.OnInspectorGUI();
     }
@@ -25,24 +27,58 @@ public class FGameManagerEditor : Editor {
                 fGameManager.Awake();
                 fGameManager.Start();
             }
+
             fGameManager.FGameMessage.Dis(FMessageCode.StartGame);
         }
 
         if (GUILayout.Button("结束游戏", GUILayout.Height(30))) {
             fGameManager.FGameMessage.Dis(FMessageCode.QuitGame);
+            FEditorCommon.SaveScene();
         }
+
         EditorGUILayout.EndHorizontal();
     }
 
-    private void GameInstallEditor(FGameManager fGameManager) {
+    private void GameInterfaceEditor(FGameManager fGameManager) {
         EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("安装基础", GUILayout.Height(30))) {
-            Install("Interface");
-            Install("Object");
-            Install("Terrain");
-            Install("Camera");
+        if (GUILayout.Button("界面编辑器", GUILayout.Height(30))) {
+            if (fGameManager.FGameState == FGameState.GameStart) {
+                return;
+            }
+
+            FInterfaceEditorTool fInterfaceEditorTool = CreateInterfaceEditor();
+            fInterfaceEditorTool.fGameManager = fGameManager;
+            fInterfaceEditorTool.isEditorInterface = false;
+            FEditorCommon.JumpToTarget(false, fInterfaceEditorTool);
         }
+
         EditorGUILayout.EndHorizontal();
+    }
+
+    private FInterfaceEditorTool CreateInterfaceEditor() {
+        string settingPath = "Assets/Script/Framework/Setting/FInterfaceSetting.asset";
+        FInterfaceSetting setting = AssetDatabase.LoadAssetAtPath<FInterfaceSetting>(settingPath);
+
+        FInterfaceEditorTool sceneInterfaceEditor = FindObjectOfType<FInterfaceEditorTool>(true);
+        if (sceneInterfaceEditor == null) {
+            GameObject interfaceEditor = Instantiate(setting.interfaceRoot);
+            interfaceEditor.name = "界面编辑器";
+
+            sceneInterfaceEditor = interfaceEditor.AddComponent<FInterfaceEditorTool>();
+
+            List<FInterfaceData> interfaceDataList = new List<FInterfaceData>(); 
+            for (int i = 0; i < setting.interfacePrefabList.Count; i++) {
+                FInterfaceData data = setting.interfacePrefabList[i];
+                GameObject interfaceGo = Instantiate(data.interfaceGo, sceneInterfaceEditor.transform);
+                interfaceDataList.Add(new FInterfaceData() {
+                    interfaceName = data.interfaceName,
+                    interfaceGo = interfaceGo,
+                });
+            }
+
+            sceneInterfaceEditor.interfaceGoList = interfaceDataList;
+        }
+        return sceneInterfaceEditor;
     }
 
     private void GameMapEditor(FGameManager fGameManager) {
@@ -51,8 +87,8 @@ public class FGameManagerEditor : Editor {
             if (fGameManager.FGameState == FGameState.GameStart) {
                 return;
             }
-            FTerrainCreator terrainCreator = new FTerrainCreator(null);
-            FMapEditorTool mapEditorTool = terrainCreator.CreateMapEditor(true, true);
+
+            FMapEditorTool mapEditorTool = CreateMapEditor();
             mapEditorTool.fGameManager = fGameManager;
             FEditorCommon.JumpToTarget(false, mapEditorTool);
         }
@@ -60,49 +96,21 @@ public class FGameManagerEditor : Editor {
         EditorGUILayout.EndHorizontal();
     }
 
-    private void Install(string type) {
-        switch (type) {
-            case "Interface":
-                GameObject interfaceGo = GameObject.Find("FInterface");
-                if (interfaceGo != null) {
-                    DestroyImmediate(interfaceGo);
-                    return;
-                }
-                GameObject canvasGo = new GameObject("FInterface");
-                Canvas canvas = canvasGo.AddComponent<Canvas>();
-                CanvasScaler canvasScaler = canvasGo.AddComponent<CanvasScaler>();
-                GraphicRaycaster graphicRaycaster = canvasGo.AddComponent<GraphicRaycaster>();
-                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+    private FMapEditorTool CreateMapEditor() {
+        string settingPath = "Assets/Script/Framework/Setting/FTerrainSetting.asset";
+        FTerrainSetting setting = AssetDatabase.LoadAssetAtPath<FTerrainSetting>(settingPath);
 
-                GameObject eventSystemGo = new GameObject("EventSystem");
-                EventSystem eventSystem = eventSystemGo.AddComponent<EventSystem>();
-                StandaloneInputModule standaloneInputModule = eventSystemGo.AddComponent<StandaloneInputModule>();
-                eventSystemGo.transform.SetParent(canvasGo.transform);
-                break;
-            case "Object":
-                GameObject objectGo = GameObject.Find("FObject");
-                if (objectGo != null) {
-                    DestroyImmediate(objectGo);
-                    return;
-                }
-                objectGo = new GameObject("FObject");
-                break;
-            case "Terrain":
-                GameObject terrainGo = GameObject.Find("FTerrain");
-                if (terrainGo != null) {
-                    DestroyImmediate(terrainGo);
-                    return;
-                }
-                terrainGo = new GameObject("FTerrain");
-                break;
-            case "Camera":
-                GameObject cameraGo = GameObject.Find("FCamera");
-                if (cameraGo != null) {
-                    DestroyImmediate(cameraGo);
-                    return;
-                }
-                cameraGo = new GameObject("FCamera");
-                break;
+        FMapEditorTool sceneMapEditor = FindObjectOfType<FMapEditorTool>(true);
+        if (sceneMapEditor == null) {
+            GameObject mapEditor = Instantiate(setting.TerrainRoot);
+            mapEditor.name = "地图编辑器";
+
+            sceneMapEditor = mapEditor.AddComponent<FMapEditorTool>();
+
+            GameObject terrainGo = Instantiate(setting.TerrainPrefab, sceneMapEditor.transform);
+            sceneMapEditor.terrainGo = terrainGo;
         }
+
+        return sceneMapEditor;
     }
 }

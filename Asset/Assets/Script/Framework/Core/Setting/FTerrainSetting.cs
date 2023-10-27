@@ -4,5 +4,6 @@ using UnityEngine;
 public class FTerrainSetting : ScriptableObject {
     public string SettingName;
     public FPointToolSetting FPointToolSetting;
+    public GameObject TerrainRoot;
     public GameObject TerrainPrefab;
 }

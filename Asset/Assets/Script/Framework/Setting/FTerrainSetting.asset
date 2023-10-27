@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SettingName: "\u5730\u5F62\u914D\u7F6E"
   FPointToolSetting: {fileID: 11400000, guid: 2b1ee0d7ae9c6534689eb32ec4d96760, type: 2}
-  TerrainPrefab: {fileID: 408433262048321511, guid: af8e1d73e9888d2418868204171eae59, type: 3}
+  TerrainRoot: {fileID: 4184966475434628627, guid: 83aa433ed29dbab40838d6516db96b41,
+    type: 3}
+  TerrainPrefab: {fileID: 408433262048321511, guid: af8e1d73e9888d2418868204171eae59,
+    type: 3}

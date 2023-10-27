@@ -1,4 +1,7 @@
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class FGameCreator {
     private int IDCreator;
@@ -48,9 +51,6 @@ public class FGameCreator {
         if (creatorSetting.IsReadArchive) {
             FTerrainCreator.ReadArchive();
         }
-#if UNITY_EDITOR
-        CreateMapEditor(false, false);
-#endif
         FTerrainCreator.CreateTerrain();
     }
 
@@ -66,16 +66,5 @@ public class FGameCreator {
         FTerrainCreator.DestroyTerrain();
         FInterfaceCreator.DestroyInterface();
         FComponentCreator.DestroyComponent();
-#if UNITY_EDITOR
-        CreateMapEditor(false, true);
-#endif
     }
-
-    #region Editor Mode Only
-
-    public void CreateMapEditor(bool isCreate, bool isDisplay) {
-        FTerrainCreator.CreateMapEditor(isCreate, isDisplay);
-    }
-
-    #endregion
 }

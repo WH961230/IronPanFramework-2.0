@@ -13,7 +13,7 @@ public class FMapEditorToolEditor : Editor {
     private int counter = 0;
     
     private string path;
-    private string editorPrefabPath = "Assets/Script/Framework/Prefab/";
+    private string editorPrefabPath = "Assets/Script/Framework/Prefab/Terrain/";
 
     public override void OnInspectorGUI() {
         FMapEditorTool fMapEditorTool = (FMapEditorTool)target;
@@ -21,12 +21,6 @@ public class FMapEditorToolEditor : Editor {
 
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("返回", GUILayout.Height(30))) {
-            FEditorCommon.SaveScene();
-            FEditorCommon.JumpToTarget(false, fMapEditorTool.fGameManager);
-            return;
-        }
-
-        if (GUILayout.Button("销毁", GUILayout.Height(30))) {
             DestroyImmediate(fMapEditorTool.gameObject);
             FEditorCommon.SaveScene();
             FEditorCommon.JumpToTarget(false, fMapEditorTool.fGameManager);
@@ -140,7 +134,7 @@ public class FMapEditorToolEditor : Editor {
             spawnedPrefab.transform.SetParent(fMapEditorTool.terrainGo.transform);
             Selection.activeObject = spawnedPrefab;
         }
-        EditorGUILayout.LabelField(go.name, EditorStyles.miniLabel, GUILayout.Width(60));
+        EditorGUILayout.TextField(go.name, EditorStyles.miniLabel, GUILayout.Width(60));
         EditorGUILayout.EndVertical();
     }
 
