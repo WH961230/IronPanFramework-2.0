@@ -70,6 +70,7 @@ public class FGameManagerEditor : Editor {
             for (int i = 0; i < setting.interfacePrefabList.Count; i++) {
                 FInterfaceData data = setting.interfacePrefabList[i];
                 GameObject interfaceGo = Instantiate(data.interfaceGo, sceneInterfaceEditor.transform);
+                interfaceGo.SetActive(false);
                 interfaceDataList.Add(new FInterfaceData() {
                     interfaceName = data.interfaceName,
                     interfaceGo = interfaceGo,

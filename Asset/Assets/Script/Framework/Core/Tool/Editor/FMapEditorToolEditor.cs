@@ -19,6 +19,8 @@ public class FMapEditorToolEditor : Editor {
         FMapEditorTool fMapEditorTool = (FMapEditorTool)target;
         GUI.skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Script/Framework/Setting/GUISkin/GUIBtn.guiskin");
 
+        FEditorCommon.LockInspector(true);
+
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("返回", GUILayout.Height(30))) {
             DestroyImmediate(fMapEditorTool.gameObject);
@@ -33,7 +35,6 @@ public class FMapEditorToolEditor : Editor {
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("编辑地形", GUILayout.Height(30))) {
             isEditor = !isEditor;
-            FEditorCommon.LockInspector(isEditor);
         }
 
         EditorGUILayout.EndHorizontal();

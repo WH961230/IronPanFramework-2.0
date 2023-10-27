@@ -7,6 +7,8 @@ public class FInterfaceEditorToolEditor : Editor {
         FInterfaceEditorTool tool = (FInterfaceEditorTool)target;
         GUI.skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Script/Framework/Setting/GUISkin/GUIBtn.guiskin");
 
+        FEditorCommon.LockInspector(true);
+
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("返回", GUILayout.Height(30))) {
             DestroyImmediate(tool.gameObject);
@@ -21,9 +23,9 @@ public class FInterfaceEditorToolEditor : Editor {
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("编辑界面", GUILayout.Height(30))) {
             tool.isEditorInterface = !tool.isEditorInterface;
-            FEditorCommon.LockInspector(tool.isEditorInterface);
         }
         EditorGUILayout.EndHorizontal();
+
         if (tool.isEditorInterface) {
             EditorGUILayout.BeginHorizontal();
             if (tool.replacePrefab != null) {
@@ -36,6 +38,8 @@ public class FInterfaceEditorToolEditor : Editor {
                 FInterfaceData toolInterfaceData = tool.interfaceGoList[i];
                 if (GUILayout.Button(toolInterfaceData.interfaceName, GUILayout.Height(30))) {
                     toolInterfaceData.interfaceGo.name = toolInterfaceData.interfaceName;
+                    toolInterfaceData.interfaceGo.SetActive(true);
+
                     tool.replacePrefab = toolInterfaceData.interfaceGo;
                     Selection.activeObject = toolInterfaceData.interfaceGo;
                 }
@@ -44,8 +48,8 @@ public class FInterfaceEditorToolEditor : Editor {
         }
 
         EditorGUILayout.BeginHorizontal();
-        if (tool.isEditorInterface) {
-            if (GUILayout.Button("存储地形", GUILayout.Height(30))) {
+        if (tool.isEditorInterface && tool.replacePrefab != null) {
+            if (GUILayout.Button("存储界面", GUILayout.Height(30))) {
                 Save(tool, Selection.activeObject.name);
             }
         }
@@ -67,6 +71,8 @@ public class FInterfaceEditorToolEditor : Editor {
 
                 AssetDatabase.SaveAssetIfDirty(setting);
                 AssetDatabase.Refresh();
+                tool.replacePrefab.SetActive(false);
+                tool.replacePrefab = null;
                 break;
             }
         }
