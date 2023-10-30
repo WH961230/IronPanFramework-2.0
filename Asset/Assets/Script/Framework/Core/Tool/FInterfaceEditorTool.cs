@@ -6,4 +6,5 @@ public class FInterfaceEditorTool : MonoBehaviour {
     public List<FInterfaceData> interfaceGoList;
     public GameObject replacePrefab;
     public bool isEditorInterface;
+    public bool isAddInterface;
 }

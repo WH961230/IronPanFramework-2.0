@@ -3,27 +3,21 @@ using UnityEngine.Events;
 
 public class FMoveComponent {
     public UnityAction OnMoveEvent;
-    public FGameObject targetFGo;
+    public GameObject targetGo;
 
-    public FMoveComponent(FGameObject targetFGo) {
-        this.targetFGo = targetFGo;
+    public FMoveComponent(GameObject targetGo) {
+        this.targetGo = targetGo;
         OnMoveEvent = MoveEvent;
     }
 
     private void MoveEvent() {
-        if(targetFGo == null) {
+        if(targetGo == null) {
             return;
         }
 
         if (Input.anyKey) {
             if (Input.GetKey(KeyCode.A)) {
-                targetFGo.TRAN_POS += Vector3.left * Time.fixedDeltaTime * 5f;
-            }
-        }
-
-        if (targetFGo.IsObjectRendered()) {
-            if (targetFGo.TRAN_POS != targetFGo.GO.transform.position) {
-                targetFGo.GO.transform.position = targetFGo.TRAN_POS;
+                targetGo.transform.position += Vector3.left * Time.fixedDeltaTime * 5f;
             }
         }
     }

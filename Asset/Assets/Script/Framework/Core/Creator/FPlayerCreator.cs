@@ -19,13 +19,9 @@ public class FPlayerCreator {
     public List<FGameData.FPlayerData> CreateAllPlayer() {
         List<FGameData.FPlayerData> retDatas = new List<FGameData.FPlayerData>();
         for (int i = 0; i < playerSetting.playerDatas.Count; i++) {
-            int num = 10000;
-            while (num > 0) {
-                FPlayerSetting.FPlayerData tmpData = playerSetting.playerDatas[i];
-                FGameData.FPlayerData tmpPlayerData = CreateSinglePlayer(tmpData);
-                retDatas.Add(tmpPlayerData);
-                num--;
-            }
+            FPlayerSetting.FPlayerData tmpData = playerSetting.playerDatas[i];
+            FGameData.FPlayerData tmpPlayerData = CreateSinglePlayer(tmpData);
+            retDatas.Add(tmpPlayerData);
         }
 
         return retDatas;
@@ -43,8 +39,7 @@ public class FPlayerCreator {
 
         FGameData.FComponentData compData = new FGameData.FComponentData();
         compData.RoleID = data.ID;
-        data.FGO = new FGameObject(data.GO, data.GO.transform);
-        compData.FixedUpdateActionList.Add(new FMoveComponent(data.FGO).OnMoveEvent);
+        compData.FixedUpdateActionList.Add(new FMoveComponent(data.GO).OnMoveEvent);
         FGameManager.Instance.FGameMessage.Dis(FMessageCode.CreateComponent, compData);
         return data;
     }

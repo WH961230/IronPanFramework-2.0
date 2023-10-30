@@ -49,7 +49,9 @@ public class FGameManagerEditor : Editor {
             FInterfaceEditorTool fInterfaceEditorTool = CreateInterfaceEditor();
             fInterfaceEditorTool.fGameManager = fGameManager;
             fInterfaceEditorTool.isEditorInterface = false;
+            fInterfaceEditorTool.isAddInterface = false;
             FEditorCommon.JumpToTarget(false, fInterfaceEditorTool);
+            FEditorCommon.LockInspector(true);
         }
 
         EditorGUILayout.EndHorizontal();
@@ -92,6 +94,7 @@ public class FGameManagerEditor : Editor {
             FMapEditorTool mapEditorTool = CreateMapEditor();
             mapEditorTool.fGameManager = fGameManager;
             FEditorCommon.JumpToTarget(false, mapEditorTool);
+            FEditorCommon.LockInspector(true);
         }
 
         EditorGUILayout.EndHorizontal();
@@ -107,9 +110,6 @@ public class FGameManagerEditor : Editor {
             mapEditor.name = "地图编辑器";
 
             sceneMapEditor = mapEditor.AddComponent<FMapEditorTool>();
-
-            GameObject terrainGo = Instantiate(setting.TerrainPrefab, sceneMapEditor.transform);
-            sceneMapEditor.terrainGo = terrainGo;
         }
 
         return sceneMapEditor;

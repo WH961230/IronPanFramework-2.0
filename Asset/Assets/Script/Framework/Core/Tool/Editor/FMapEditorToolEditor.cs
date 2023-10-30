@@ -1,6 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CustomEditor(typeof(FMapEditorTool))]
 public class FMapEditorToolEditor : Editor {
@@ -11,38 +12,44 @@ public class FMapEditorToolEditor : Editor {
     private int y = 0;
     private int x = 0;
     private int counter = 0;
-    
+
     private string path;
     private string editorPrefabPath = "Assets/Script/Framework/Prefab/Terrain/";
 
+    string settingPath = "Assets/Script/Framework/Setting/FTerrainSetting.asset";
+    private FTerrainSetting setting;
+    private FTerrainSetting Setting {
+        get {
+            if (setting == null) {
+                setting = AssetDatabase.LoadAssetAtPath<FTerrainSetting>(settingPath);
+            }
+            return setting;
+        }
+    }
+
     public override void OnInspectorGUI() {
-        FMapEditorTool fMapEditorTool = (FMapEditorTool)target;
+        FMapEditorTool tool = (FMapEditorTool)target;
         GUI.skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Script/Framework/Setting/GUISkin/GUIBtn.guiskin");
 
-        FEditorCommon.LockInspector(true);
-
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("返回", GUILayout.Height(30))) {
-            DestroyImmediate(fMapEditorTool.gameObject);
-            FEditorCommon.SaveScene();
-            FEditorCommon.JumpToTarget(false, fMapEditorTool.fGameManager);
-            return;
-        }
-        EditorGUILayout.EndHorizontal();
+        Back(tool);
 
         GUILayout.Label("游戏管理器 - 地图编辑器");
 
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("编辑地形", GUILayout.Height(30))) {
-            isEditor = !isEditor;
-        }
-
-        EditorGUILayout.EndHorizontal();
-
+        GameEditor(tool);
         GameSetting();
-        GameEditor(fMapEditorTool);
 
         base.OnInspectorGUI();
+    }
+
+    private void Back(FMapEditorTool tool) {
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("返回", GUILayout.Height(30))) {
+            DestroyImmediate(tool.gameObject);
+            FEditorCommon.SaveScene();
+            FEditorCommon.JumpToTarget(false, tool.fGameManager);
+            return;
+        }
+        EditorGUILayout.EndHorizontal();
     }
 
     private void GameSetting() {
@@ -65,7 +72,20 @@ public class FMapEditorToolEditor : Editor {
         EditorGUILayout.EndHorizontal();
     }
 
-    private void GameEditor(FMapEditorTool fMapEditorTool) {
+    private void GameEditor(FMapEditorTool tool) {
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("编辑地形", GUILayout.Height(30))) {
+            isEditor = !isEditor;
+
+            if (isEditor) {
+                tool.terrainGo = Instantiate(Setting.TerrainPrefab, tool.transform);
+            } else {
+                DestroyImmediate(tool.terrainGo);
+                tool.terrainGo = null;
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+
         if (isEditor) {
             x = 0;
             y = 0;
@@ -90,7 +110,7 @@ public class FMapEditorToolEditor : Editor {
 
             if (guids.Length > 0) {
                 while (counter < guids.Length) {
-                    DisplayPrefabItemLine(fMapEditorTool, guids);
+                    DisplayPrefabItemLine(tool, guids);
                     x++;
                     y = 0;
                 }
@@ -99,7 +119,7 @@ public class FMapEditorToolEditor : Editor {
             EditorGUILayout.EndScrollView();
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("存储地形", GUILayout.Height(30))) {
-                SaveTerrain(fMapEditorTool);
+                SaveTerrain(tool);
             }
             EditorGUILayout.EndHorizontal();
         }
