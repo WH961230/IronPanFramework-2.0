@@ -131,11 +131,17 @@ public class FMessageCode {
     public static int StartGame = 5;//开始游戏
     public static int QuitGame = 6;//退出游戏
 
+    public static int UpdateEvent = 12;//更新
+
     public static int CreateTerrain = 3;//创建地形
     public static int RemoveTerrain = 4;//移除地形
     public static int RemoveAllTerrain = 8;//移除所有物体
 
-    public static int CreatePlayer = 9;
-    public static int RemovePlayer = 10;
-    public static int RemoveAllPlayer = 11;
+    public static int CreatePlayer = 9;//创建玩家
+    public static int RemovePlayer = 10;//移除玩家
+    public static int RemoveAllPlayer = 11;//移除所有玩家
+
+    public static int CreateComponent = 13;//注册组件
+    public static int RemoveComponent = 14;//移除组件
+    public static int RemoveAllComponent = 15;//移除所有组件
 }

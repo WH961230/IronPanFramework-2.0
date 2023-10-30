@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FGameManager : MonoBehaviour {
     public FGameMessage FGameMessage;
@@ -7,6 +8,10 @@ public class FGameManager : MonoBehaviour {
 
     public FGameState FGameState;
     private FGameCreator FGameCreator;
+
+    public UnityEvent UpdateEvent;
+    public UnityEvent FixedUpdateEvent;
+    public UnityEvent LateUpdateEvent;
 
     public static FGameManager Instance;
     public void Awake() {
@@ -16,6 +21,7 @@ public class FGameManager : MonoBehaviour {
 
     public void Start() {
         FGameMessage.Reg(FMessageCode.StartGame, StartGame);
+        FGameMessage.Reg<FUpdateType, UnityAction>(FMessageCode.UpdateEvent, MsgUpdate);
         FGameMessage.Reg(FMessageCode.QuitGame, QuitGame);
     }
 
@@ -29,6 +35,32 @@ public class FGameManager : MonoBehaviour {
         FGameCreator.CreateGame();
 
         FGameState = FGameState.GameStart;
+    }
+
+    private void MsgUpdate(FUpdateType updateType, UnityAction unityAction) {
+        switch (updateType) {
+            case FUpdateType.Update:
+                UpdateEvent?.AddListener(unityAction);
+                break;
+            case FUpdateType.FixedUpdate:
+                FixedUpdateEvent?.AddListener(unityAction);
+                break;
+            case FUpdateType.LateUpdate:
+                LateUpdateEvent?.AddListener(unityAction);
+                break;
+        }
+    }
+
+    private void Update() {
+        UpdateEvent?.Invoke();
+    }
+
+    private void FixedUpdate() {
+        FixedUpdateEvent?.Invoke();
+    }
+
+    private void LateUpdate() {
+        LateUpdateEvent?.Invoke();
     }
 
     private void QuitGame() {
@@ -49,4 +81,10 @@ public class FGameManager : MonoBehaviour {
 public enum FGameState {
     GameQuit,
     GameStart,
+}
+
+public enum FUpdateType {
+    Update,
+    FixedUpdate,
+    LateUpdate,
 }

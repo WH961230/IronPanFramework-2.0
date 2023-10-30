@@ -37,6 +37,7 @@ public partial class FGameData {
     public class FPlayerData {
         public int ID;
         public GameObject GO;
+        public FGameObject FGO;
         public bool IsMainPlayer;
     }
 }
