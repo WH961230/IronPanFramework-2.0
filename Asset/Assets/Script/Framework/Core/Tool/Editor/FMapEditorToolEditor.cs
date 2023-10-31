@@ -1,7 +1,5 @@
-using System;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [CustomEditor(typeof(FMapEditorTool))]
 public class FMapEditorToolEditor : Editor {
@@ -78,7 +76,7 @@ public class FMapEditorToolEditor : Editor {
             isEditor = !isEditor;
 
             if (isEditor) {
-                tool.terrainGo = Instantiate(Setting.TerrainPrefab, tool.transform);
+                tool.terrainGo = Instantiate(Setting.TerrainCreateInfos[0].prefab, tool.transform);
             } else {
                 DestroyImmediate(tool.terrainGo);
                 tool.terrainGo = null;
@@ -163,12 +161,12 @@ public class FMapEditorToolEditor : Editor {
         string settingPath = "Assets/Script/Framework/Setting/FTerrainSetting.asset";
         FTerrainSetting terrainSetting = AssetDatabase.LoadAssetAtPath<FTerrainSetting>(settingPath);
 
-        string path = AssetDatabase.GetAssetPath(terrainSetting.TerrainPrefab);
+        string path = AssetDatabase.GetAssetPath(terrainSetting.TerrainCreateInfos[0].prefab);
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
         fMapEditorTool.terrainGo.name = "FTerrain";
         GameObject replacePrefab = PrefabUtility.ReplacePrefab(fMapEditorTool.terrainGo, prefab, ReplacePrefabOptions.ConnectToPrefab);
 
-        terrainSetting.TerrainPrefab = replacePrefab;
+        terrainSetting.TerrainCreateInfos[0].prefab = replacePrefab;
 
         AssetDatabase.SaveAssetIfDirty(terrainSetting);
         AssetDatabase.Refresh();

@@ -24,6 +24,10 @@ public class FAct {
 }
 
 public class FGameMessage {
+    public static FGameMessage Instance;
+    public FGameMessage() {
+        Instance = this;
+    }
     private FMessageRegister register = new FMessageRegister();
     public void Reg(int id, Action a) {
         register.Register(id, a);
@@ -34,6 +38,10 @@ public class FGameMessage {
     }
 
     public void Reg<T1, T2>(int id, Action<T1, T2> a) {
+        register.Register(id, a);
+    }
+
+    public void Reg<T1, T2, T3>(int id, Action<T1, T2, T3> a) {
         register.Register(id, a);
     }
 
@@ -49,6 +57,10 @@ public class FGameMessage {
         register.UnRegister(id, act);
     }
 
+    public void UnReg<T1, T2, T3>(int id, Action<T1, T2, T3> act) {
+        register.UnRegister(id, act);
+    }
+
     public void Dis(int id) {
         register.Dispatcher(id);
     }
@@ -59,6 +71,10 @@ public class FGameMessage {
 
     public void Dis<T1, T2>(int id, T1 t1, T2 t2) {
         register.Dispatcher(id, t1, t2);
+    }
+
+    public void Dis<T1, T2, T3>(int id, T1 t1, T2 t2, T3 t3) {
+        register.Dispatcher(id, t1, t2, t3);
     }
 }
 
@@ -125,23 +141,12 @@ public class FMessageRegister {
             }
         }
     }
-}
 
-public class FMessageCode {
-    public static int StartGame = 5;//开始游戏
-    public static int QuitGame = 6;//退出游戏
-
-    public static int UpdateEvent = 12;//更新
-
-    public static int CreateTerrain = 3;//创建地形
-    public static int RemoveTerrain = 4;//移除地形
-    public static int RemoveAllTerrain = 8;//移除所有物体
-
-    public static int CreatePlayer = 9;//创建玩家
-    public static int RemovePlayer = 10;//移除玩家
-    public static int RemoveAllPlayer = 11;//移除所有玩家
-
-    public static int CreateComponent = 13;//注册组件
-    public static int RemoveComponent = 14;//移除组件
-    public static int RemoveAllComponent = 15;//移除所有组件
+    public void Dispatcher<T1, T2, T3>(int id, T1 act1, T2 act2, T3 act3) {
+        if (handles.TryGetValue(id, out List<Act> acts)) {
+            for (int i = 0; i < acts.Count; i++) {
+                acts[i].Invoke(act1, act2, act3);
+            }
+        }
+    }
 }

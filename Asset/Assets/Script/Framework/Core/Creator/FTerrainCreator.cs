@@ -3,29 +3,46 @@ using UnityEngine;
 
 public class FTerrainCreator {
     private string settingPath = "Assets/Script/Framework/Setting/FTerrainSetting.asset";
-    private FTerrainSetting terrainSetting;
+    private FTerrainSetting setting;
 
     private FGameCreator gameCreator;
 
     public FTerrainCreator(FGameCreator gameCreator) {
         this.gameCreator = gameCreator;
-        terrainSetting = AssetDatabase.LoadAssetAtPath<FTerrainSetting>(settingPath);
+        setting = AssetDatabase.LoadAssetAtPath<FTerrainSetting>(settingPath);
         CreateRoot();
+        FGameMessage.Instance.Reg<string>(FMessageCode.CreateTerrain, Create);
+        FGameMessage.Instance.Reg<int>(FMessageCode.RemovePlayer, Remove);
+        FGameMessage.Instance.Reg(FMessageCode.RemoveAllTerrain, RemoveAll);
     }
 
-    public void ReadArchive() {
+    private void Create(string name) {
+        for (int i = 0; i < setting.TerrainCreateInfos.Count; i++) {
+            FTerrainSetting.FTerrainData tmpData = setting.TerrainCreateInfos[i];
+            if (tmpData.name == name) {
+                CreateSingle(tmpData);
+                break;
+            }
+        }
     }
 
-    public void CreateTerrain() {
+    private void CreateSingle(FTerrainSetting.FTerrainData settingData) {
         FGameData.FTerrainData data = new FGameData.FTerrainData();
         data.ID = gameCreator.GetIDCreator();
-        data.GO = Object.Instantiate(terrainSetting.TerrainPrefab, GameObject.Find("FTerrainRoot")?.transform);
+        data.GO = Object.Instantiate(settingData.prefab, GameObject.Find("FObjectRoot")?.transform);
 
-        FGameManager.Instance.FGameMessage.Dis(FMessageCode.CreateTerrain, data);
+        FPointToolSetting.FPointData tmpFPointData = setting.FPointToolSetting.GetRandomFPointData();
+        data.GO.transform.position = tmpFPointData.FPointPos;
+        data.GO.transform.rotation = tmpFPointData.FPointRot;
+        FGameMessage.Instance.Dis(FMessageCode.CreateTerrainData, data);
     }
 
-    public void DestroyTerrain() {
-        FGameManager.Instance.FGameMessage.Dis(FMessageCode.RemoveAllTerrain);
+    private void Remove(int id) {
+        FGameMessage.Instance.Dis(FMessageCode.RemoveTerrainData);
+    }
+
+    private void RemoveAll() {
+        FGameMessage.Instance.Dis(FMessageCode.RemoveAllTerrainData);
         RemoveRoot();
     }
 
@@ -34,7 +51,7 @@ public class FTerrainCreator {
         if (rootGo != null) {
             return rootGo;
         }
-        rootGo = Object.Instantiate(terrainSetting.TerrainRoot);
+        rootGo = Object.Instantiate(setting.TerrainRoot);
         rootGo.name = "FTerrainRoot";
         return rootGo;
     }

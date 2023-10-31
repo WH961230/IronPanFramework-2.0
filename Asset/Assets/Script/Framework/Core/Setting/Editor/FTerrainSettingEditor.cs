@@ -37,6 +37,8 @@ public class FTerrainSettingEditor : Editor {
         }
 
         EditorGUILayout.EndHorizontal();
+
+        GUI.skin = null;
         base.OnInspectorGUI();
     }
 }

@@ -23,15 +23,18 @@ public class FGameManagerEditor : Editor {
     private void GameLifeCycle(FGameManager fGameManager) {
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("开始游戏", GUILayout.Height(30))) {
-            if (FGameManager.Instance == null) {
-                fGameManager.Awake();
-                fGameManager.Start();
+            if (fGameManager.FGameState == FGameState.GameStart) {
+                return;
             }
-
+            fGameManager.Awake();
+            fGameManager.Start();
             fGameManager.FGameMessage.Dis(FMessageCode.StartGame);
         }
 
         if (GUILayout.Button("结束游戏", GUILayout.Height(30))) {
+            if (fGameManager.FGameState == FGameState.GameQuit) {
+                return;
+            }
             fGameManager.FGameMessage.Dis(FMessageCode.QuitGame);
             FEditorCommon.SaveScene();
         }

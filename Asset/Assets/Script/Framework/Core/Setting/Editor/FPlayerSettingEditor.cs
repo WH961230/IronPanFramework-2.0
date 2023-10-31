@@ -36,6 +36,7 @@ public class FPlayerSettingEditor : Editor {
         }
         EditorGUILayout.EndHorizontal();
 
+        GUI.skin = null;
         base.OnInspectorGUI();
     }
 }

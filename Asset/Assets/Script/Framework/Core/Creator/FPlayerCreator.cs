@@ -11,41 +11,49 @@ public class FPlayerCreator {
         this.gameCreator = gameCreator;
         playerSetting = AssetDatabase.LoadAssetAtPath<FPlayerSetting>(settingPath);
         CreateRoot();
+        FGameMessage.Instance.Reg<string>(FMessageCode.CreatePlayer, Create);
+        FGameMessage.Instance.Reg<int>(FMessageCode.RemovePlayer, Remove);
+        FGameMessage.Instance.Reg(FMessageCode.RemoveAllPlayer, RemoveAll);
     }
 
-    public void ReadArchive() {
-    }
-
-    public List<FGameData.FPlayerData> CreateAllPlayer() {
-        List<FGameData.FPlayerData> retDatas = new List<FGameData.FPlayerData>();
+    private void Create(string name) {
         for (int i = 0; i < playerSetting.playerDatas.Count; i++) {
             FPlayerSetting.FPlayerData tmpData = playerSetting.playerDatas[i];
-            FGameData.FPlayerData tmpPlayerData = CreateSinglePlayer(tmpData);
-            retDatas.Add(tmpPlayerData);
+            if (tmpData.name == name) {
+                CreateSingle(tmpData);
+                break;
+            }
         }
-
-        return retDatas;
     }
 
-    private FGameData.FPlayerData CreateSinglePlayer(FPlayerSetting.FPlayerData settingPlayerData) {
+    private void CreateSingle(FPlayerSetting.FPlayerData settingPlayerData) {
         FGameData.FPlayerData data = new FGameData.FPlayerData();
         data.ID = gameCreator.GetIDCreator();
         data.GO = Object.Instantiate(settingPlayerData.prefab, GameObject.Find("FObjectRoot")?.transform);
+        data.GO.name = settingPlayerData.name + "_" + data.ID;
+
         FPointToolSetting.FPointData tmpFPointData = playerSetting.FPointToolSetting.GetRandomFPointData();
         data.GO.transform.position = tmpFPointData.FPointPos;
         data.GO.transform.rotation = tmpFPointData.FPointRot;
-        data.IsMainPlayer = true;
-        FGameManager.Instance.FGameMessage.Dis(FMessageCode.CreatePlayer, data);
+        data.MAIN = true;
+        FGameMessage.Instance.Dis(FMessageCode.CreatePlayerData, data);
 
-        FGameData.FComponentData compData = new FGameData.FComponentData();
-        compData.RoleID = data.ID;
-        compData.FixedUpdateActionList.Add(new FMoveComponent(data.GO).OnMoveEvent);
-        FGameManager.Instance.FGameMessage.Dis(FMessageCode.CreateComponent, compData);
-        return data;
+        for (int i = 0; i < settingPlayerData.components.Count; i++) {
+            string component = settingPlayerData.components[i];
+            FGameMessage.Instance.Dis(FMessageCode.CreateComponent, FGameDataType.Player, data.ID, component);
+        }
     }
 
-    public void DestroyPlayer() {
-        FGameManager.Instance.FGameMessage.Dis(FMessageCode.RemoveAllPlayer);
+    private void Remove(int id) {
+        FGameMessage.Instance.Dis(FMessageCode.RemovePlayerData, id);
+    }
+
+    private void RemoveAll() {
+        FGameMessage.Instance.Dis(FMessageCode.RemoveAllPlayerData);
+
+        FGameMessage.Instance.UnReg<string>(FMessageCode.CreatePlayer, Create);
+        FGameMessage.Instance.UnReg<int>(FMessageCode.RemovePlayer, Remove);
+        FGameMessage.Instance.UnReg(FMessageCode.RemoveAllPlayer, RemoveAll);
         RemoveRoot();
     }
 

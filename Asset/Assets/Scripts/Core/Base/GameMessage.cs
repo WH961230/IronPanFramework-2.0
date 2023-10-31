@@ -21,6 +21,10 @@ public class Act {
     public void Invoke<T1, T2>(T1 t1, T2 t2) {
         ((Action<T1, T2>)handler).Invoke(t1, t2);
     }
+
+    public void Invoke<T1, T2, T3>(T1 t1, T2 t2, T3 t3) {
+        ((Action<T1, T2, T3>)handler).Invoke(t1, t2, t3);
+    }
 }
 
 public class GameMessage {

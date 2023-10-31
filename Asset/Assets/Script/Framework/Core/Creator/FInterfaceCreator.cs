@@ -16,7 +16,7 @@ public class FInterfaceCreator {
     public void ReadArchive() {
     }
 
-    public void CreateInterface() {
+    public void Create() {
         List<GameObject> interfaceGoList = new List<GameObject>(); 
         for (int i = 0; i < setting.interfacePrefabList.Count; i++) {
             GameObject prefab = setting.interfacePrefabList[i].interfaceGo;
@@ -26,7 +26,7 @@ public class FInterfaceCreator {
         }
     }
 
-    public void DestroyInterface() {
+    public void Destroy() {
         RemoveRoot("FInterfaceRoot");
     }
 

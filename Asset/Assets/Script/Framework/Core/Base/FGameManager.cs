@@ -4,40 +4,44 @@ using UnityEngine.Events;
 
 public class FGameManager : MonoBehaviour {
     public FGameMessage FGameMessage;
-    public FGameData FGameData;
 
     public FGameState FGameState;
-    private FGameCreator FGameCreator;
 
-    public UnityEvent UpdateEvent;
-    public UnityEvent FixedUpdateEvent;
-    public UnityEvent LateUpdateEvent;
+    private UnityEvent UpdateEvent = new UnityEvent();
+    private UnityEvent FixedUpdateEvent = new UnityEvent();
+    private UnityEvent LateUpdateEvent = new UnityEvent();
 
-    public static FGameManager Instance;
     public void Awake() {
-        Instance = this;
         FGameMessage = new FGameMessage();
     }
 
     public void Start() {
         FGameMessage.Reg(FMessageCode.StartGame, StartGame);
-        FGameMessage.Reg<FUpdateType, UnityAction>(FMessageCode.UpdateEvent, MsgUpdate);
         FGameMessage.Reg(FMessageCode.QuitGame, QuitGame);
+        FGameMessage.Reg<FUpdateType, UnityAction>(FMessageCode.AddUpdateListener, MsgAddUpdate);
+        FGameMessage.Reg<FUpdateType, UnityAction>(FMessageCode.RemoveUpdateListener, MsgRemoveUpdate);
     }
 
     private void StartGame() {
         if (FGameState == FGameState.GameStart) {
             return;
         }
-        FGameData = new FGameData();
-        FGameCreator = new FGameCreator();
-
-        FGameCreator.CreateGame();
-
+        new FGameData();
+        new FGameCreator();
+        FGameMessage.Dis(FMessageCode.CreateAll);
         FGameState = FGameState.GameStart;
     }
 
-    private void MsgUpdate(FUpdateType updateType, UnityAction unityAction) {
+    private void QuitGame() {
+        if (FGameState == FGameState.GameQuit) {
+            return;
+        }
+        FGameMessage.Dis(FMessageCode.DestoryAll);
+        FGameMessage = null;
+        FGameState = FGameState.GameQuit;
+    }
+
+    private void MsgAddUpdate(FUpdateType updateType, UnityAction unityAction) {
         switch (updateType) {
             case FUpdateType.Update:
                 UpdateEvent?.AddListener(unityAction);
@@ -47,6 +51,20 @@ public class FGameManager : MonoBehaviour {
                 break;
             case FUpdateType.LateUpdate:
                 LateUpdateEvent?.AddListener(unityAction);
+                break;
+        }
+    }
+
+    private void MsgRemoveUpdate(FUpdateType updateType, UnityAction unityAction) {
+        switch (updateType) {
+            case FUpdateType.Update:
+                UpdateEvent?.RemoveListener(unityAction);
+                break;
+            case FUpdateType.FixedUpdate:
+                FixedUpdateEvent?.RemoveListener(unityAction);
+                break;
+            case FUpdateType.LateUpdate:
+                LateUpdateEvent?.RemoveListener(unityAction);
                 break;
         }
     }
@@ -61,19 +79,6 @@ public class FGameManager : MonoBehaviour {
 
     private void LateUpdate() {
         LateUpdateEvent?.Invoke();
-    }
-
-    private void QuitGame() {
-        if (FGameState == FGameState.GameQuit) {
-            return;
-        }
-        FGameCreator.DestroyGame();
-        FGameCreator = null;
-
-        FGameData.Clear();
-        FGameData = null;
-
-        FGameState = FGameState.GameQuit;
     }
 }
 

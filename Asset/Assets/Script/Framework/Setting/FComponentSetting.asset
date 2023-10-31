@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d80bfd5279411bbf00f55d55cc3a8a, type: 3}
   m_Name: FComponentSetting
   m_EditorClassIdentifier: 
+  componentDatas:
+  - name: 
+    setting: {fileID: 0}

@@ -5,6 +5,10 @@ public partial class FGameData {
     private readonly List<FPlayerData> playerDatas = new List<FPlayerData>();
     private readonly Dictionary<int, FPlayerData> playerDataDics = new Dictionary<int, FPlayerData>();
 
+    public bool TryGetPlayer(int id, out FPlayerData data) {
+        return playerDataDics.TryGetValue(id, out data);
+    }
+
     private void OnPlayerCreate(FPlayerData data) {
         bool tryAdd = playerDataDics.TryAdd(data.ID, data);
         if (tryAdd) {
@@ -36,7 +40,8 @@ public partial class FGameData {
 
     public class FPlayerData {
         public int ID;
+        public string NAME;
         public GameObject GO;
-        public bool IsMainPlayer;
+        public bool MAIN;
     }
 }

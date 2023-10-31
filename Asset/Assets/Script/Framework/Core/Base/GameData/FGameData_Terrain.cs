@@ -5,6 +5,10 @@ public partial class FGameData {
     private readonly List<FTerrainData> terrainDatas = new List<FTerrainData>();
     private readonly Dictionary<int, FTerrainData> terrainDataDics = new Dictionary<int, FTerrainData>();
 
+    public bool TryGetTerrain(int id, out FTerrainData data) {
+        return terrainDataDics.TryGetValue(id, out data);
+    }
+
     private void OnTerrainCreate(FTerrainData data) {
         bool tryAdd = terrainDataDics.TryAdd(data.ID, data);
         if (tryAdd) {

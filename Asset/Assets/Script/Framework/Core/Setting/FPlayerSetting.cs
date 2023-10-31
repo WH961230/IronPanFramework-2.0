@@ -13,5 +13,6 @@ public class FPlayerSetting : ScriptableObject {
     public class FPlayerData {
         public string name;
         public GameObject prefab;
+        public List<string> components = new List<string>();
     }
 }

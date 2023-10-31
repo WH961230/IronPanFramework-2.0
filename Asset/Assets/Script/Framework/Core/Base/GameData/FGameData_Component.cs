@@ -6,14 +6,13 @@ public partial class FGameData {
     private readonly List<FComponentData> componentDatas = new List<FComponentData>();
     private readonly Dictionary<int, List<FComponentData>> componentDataDics = new Dictionary<int, List<FComponentData>>();
 
-    private void OnComponentAdd(FComponentData data) {
+    private void OnComponentCreate(FComponentData data) {
         if (componentDataDics.TryGetValue(data.RoleID, out List<FComponentData> listData)) {
-            if (!listData.Contains(data)) {
-                listData.Add(data);
-                componentDataDics[data.RoleID] = listData;
-            } else {
+            if (listData.Contains(data)) {
                 return;
             }
+            listData.Add(data);
+            componentDataDics[data.RoleID] = listData;
         } else {
             List<FComponentData> tmpList = new List<FComponentData>();
             tmpList.Add(data);
@@ -21,7 +20,8 @@ public partial class FGameData {
         }
 
         for (int i = 0; i < data.FixedUpdateActionList.Count; i++) {
-            FGameManager.Instance.FixedUpdateEvent.AddListener(data.FixedUpdateActionList[i]);
+            FGameMessage.Instance.Dis(FMessageCode.AddUpdateListener, FUpdateType.FixedUpdate,
+                data.FixedUpdateActionList[i]);
         }
     }
 
@@ -29,7 +29,8 @@ public partial class FGameData {
         if (componentDataDics.TryGetValue(data.RoleID, out List<FComponentData> listData)) {
             if (listData.Contains(data)) {
                 for (int i = 0; i < data.FixedUpdateActionList.Count; i++) {
-                    FGameManager.Instance.FixedUpdateEvent.RemoveListener(data.FixedUpdateActionList[i]);
+                    FGameMessage.Instance.Dis(FMessageCode.RemoveUpdateListener, FUpdateType.FixedUpdate,
+                        data.FixedUpdateActionList[i]);
                 }
                 listData.Remove(data);
                 componentDataDics[data.RoleID] = listData;
@@ -39,6 +40,13 @@ public partial class FGameData {
 
     private void OnComponentRemoveAll(int roleId) {
         if (componentDataDics.TryGetValue(roleId, out List<FComponentData> listData)) {
+            for (int i = 0; i < listData.Count; i++) {
+                FComponentData data = listData[i];
+                for (int j = 0; j < data.FixedUpdateActionList.Count; j++) {
+                    UnityAction action = data.FixedUpdateActionList[i];
+                    FGameMessage.Instance.Dis(FMessageCode.RemoveUpdateListener, FUpdateType.FixedUpdate, action);
+                }
+            }
             componentDataDics.Remove(roleId);
         }
     }

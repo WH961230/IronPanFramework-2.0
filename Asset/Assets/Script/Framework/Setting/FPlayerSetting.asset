@@ -17,6 +17,15 @@ MonoBehaviour:
   objectRootPrefab: {fileID: 21248228778798563, guid: 990ae5ae5f12b304bb9f57a0d85595fb,
     type: 3}
   playerDatas:
-  - name: "\u63A7\u5236\u73A9\u5BB6"
+  - name: Player
     prefab: {fileID: 5972454839621705586, guid: fd9a64e65d4e5b84c86ec208c4be1c47,
       type: 3}
+    components:
+    - FMoveComponent_Move
+    - FLookComponent_Look
+    - FTouchComponent_Touch
+  - name: Item
+    prefab: {fileID: 5972454839621705586, guid: 457f67a919db68c4983fb2036aa4c2a3,
+      type: 3}
+    components:
+    - FTouchComponent_Touch
